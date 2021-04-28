@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>game</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        .gameContainer{
+          display: grid;
+          grid-template-rows: repeat(4, max-content);
+          grid-template-columns: repeat(4, max-content);
+          gap: 4px;
+        }
+        .numCube{
+            width: 50px;
+            height: 50px;
+            background-color: bisque;
+            border-radius: 5px;
+            border:2px solid burlywood;
+            text-align: center;
+            line-height: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color :cornflowerblue;
+            font-size: 20px; /*字体大小*/
+            font-weight: 700; /*加粗*/
+        }
+    </style>
+</head>
+<body>
+    <!-- <button onclick="pushUp();">上</button>
+    <button onclick="pushDown();">下</button>
+    <button onclick="pushLeft();">左</button>
+    <button onclick="pushRight();">右</button> -->
+    <div id="gameDiv" class="gameContainer">
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+        <div class="numCube" name="numCube" ></div>
+    </div>
+    
+    <!-- <div>
+        <span>自定义出现的数</span>
+        <input type="text" id="selfRdNum">
+        <button id="setRdNum">设置</button>
+    </div> -->
+
+</body>
+<!-- <script src="./jquery-3.2.1.min.js"></script> -->
+<script src="./2048.js" type="module"></script>
+</html>
