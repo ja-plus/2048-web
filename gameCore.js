@@ -2,9 +2,10 @@
 export default class Core {
   constructor(gameArr) {
     this.GAME_SCORE = 0;
-    this.GAME = gameArr;//全局游戏矩阵
-    this.MATRIC_SIZE = 4;//默认矩阵大小为4
-    this.rdNum = [2, 4];//随机生成的数字集合，新数字会随机从中选择一个，并随机生成在矩阵空位
+    this.GAME = gameArr; //全局游戏矩阵
+    this.MATRIC_SIZE = 4; //默认矩阵大小为4
+    this.rdNum = [2, 4]; //随机生成的数字集合，新数字会随机从中选择一个，并随机生成在矩阵空位
+    this.newNumPosition = []; //新生成数字的坐标['x1-y1','x2-y2']
     if (!gameArr) this.initArr(); // 不传入矩阵则生成矩阵
 
     // 给Array原型加上判断数组是否相同的方法
@@ -32,9 +33,8 @@ export default class Core {
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       this.GAME[i] = new Array(this.MATRIC_SIZE).fill(0);
     }
-    let pX = Math.floor(Math.random() * 4);//矩阵横坐标
-    let pY = Math.floor(Math.random() * 4);//矩阵纵坐标
-    this.GAME[pX][pY] = this.rdNum[Math.floor(Math.random() * this.rdNum.length)];//自动生成数字填入
+    this.setEmptyNum(); // 随机生成数字
+    this.showGame();
   }
 
   /**集成控制上下左右 */
@@ -55,12 +55,14 @@ export default class Core {
         break;
     }
     // 移动前后判断矩阵是否相同，用于判断是否在空位生成新数字
-    if(!this.GAME.equalTo(beforeArr)){
+    if (!this.GAME.equalTo(beforeArr)) {
       this.setEmptyNum();
       let isOver = this.isGameOver();
       this.showGame();
       if (isOver) {
-        alert("2048 End!Your Score:" + this.GAME_SCORE);
+        setTimeout(() => {
+          alert("2048 End!Your Score:" + this.GAME_SCORE);
+        }, 500);
       }
     }
   }
@@ -76,7 +78,6 @@ export default class Core {
   /** 右移 */
   pushRight() {
     for (const row of this.GAME) {
-      // 数字左移
       row.reverse(); // 反转
       this.arrLeft(row);
       row.reverse(); // 再反转
@@ -146,6 +147,7 @@ export default class Core {
    * 空位随机生成数字
    * */
   setEmptyNum() {
+    this.newNumPosition = []; // 新生成的数字坐标，用于加动画
     let temparr = [];//矩阵空位的坐标
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
@@ -157,6 +159,7 @@ export default class Core {
     if (temparr.length != 0) { //空位不为0
       let rX = Math.floor(Math.random() * temparr.length);
       let [x, y] = temparr[rX]; // 随机的空位坐标
+      this.newNumPosition.push(x + '-' + y);
       this.GAME[x][y] = this.rdNum[Math.floor(Math.random() * this.rdNum.length)];//自动生成数字填入
     }
   }
@@ -181,7 +184,13 @@ export default class Core {
     let numCude = document.querySelectorAll("#gameDiv>.numCube");
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
-        numCude[this.MATRIC_SIZE * i + j].textContent = this.GAME[i][j] || '';    
+        let cube = numCude[this.MATRIC_SIZE * i + j]
+        cube.textContent = this.GAME[i][j] || '';
+        if(this.newNumPosition.includes(i+ '-' + j)){
+          cube.classList.remove('scale');
+          void cube.offsetWidth; // 触发重绘
+          cube.classList.add('scale');
+        }
       }
     }
   }
