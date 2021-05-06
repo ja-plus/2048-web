@@ -169,6 +169,7 @@ export default class Core {
   /** 判断游戏是否结束 */
   isGameOver() {
     let isOver = true; //游戏结束判断标识符，默认结束
+    this.GAME_SCORE = 0;
     //判断所有相邻位置没有相同的数  
     G1: for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
