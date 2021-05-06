@@ -1,8 +1,6 @@
-// import {gameStart, pushDown, pushLeft, pushRight, pushUp} from './2048-core.js';
 import GameCore from './gameCore.js'
 window.onload=function(){
     // alert("mission start!");
-    // gameStart();//初始化游戏
     let game =  new GameCore(); 
     keyAction(game);//初始化键盘响应事件
     touchAction(game);
@@ -16,15 +14,12 @@ function keyAction(game){
         }
         if(e.keyCode == 38){
             game.control('up');
-            // pushUp();
         }
         if(e.keyCode == 39){
             game.control('right');
-            // pushRight();
         }
         if(e.keyCode == 40){
             game.control('down');
-            // pushDown();
         }
     }
 }

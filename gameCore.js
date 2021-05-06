@@ -1,4 +1,7 @@
-/*2048.js author:chja */
+/**
+ * 2048 game core 
+ * @author:JA+ 
+ */
 export default class Core {
   constructor(gameArr) {
     this.GAME_SCORE = 0;
@@ -27,17 +30,20 @@ export default class Core {
     }
   }
 
-  /** 初始化游戏矩阵 */
+  /** init game array*/
   initArr() {
     this.GAME = new Array(this.MATRIC_SIZE);
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       this.GAME[i] = new Array(this.MATRIC_SIZE).fill(0);
     }
-    this.setEmptyNum(); // 随机生成数字
+    this.setEmptyNum(); // create random number
     this.showGame();
   }
 
-  /**集成控制上下左右 */
+  /**
+   * 集成控制上下左右
+   * @param {String} direction ['up'|'down'|'left'|'right']
+   */
   control(direction) {
     let beforeArr = JSON.parse(JSON.stringify(this.GAME));
     switch (direction) {
@@ -66,7 +72,6 @@ export default class Core {
       }
     }
   }
-  /**左移 */
   pushLeft() {
     let tempArr = JSON.parse(JSON.stringify(this.GAME)); // 保存矩阵用于先后比较是否相等
     for (const row of this.GAME) {
@@ -75,7 +80,6 @@ export default class Core {
     }
     return this.GAME.equalTo(tempArr);
   }
-  /** 右移 */
   pushRight() {
     for (const row of this.GAME) {
       row.reverse(); // 反转
@@ -83,13 +87,11 @@ export default class Core {
       row.reverse(); // 再反转
     }
   }
-  /**上移 */
   pushUp() {
     this.switchXY(); // 对角线翻折
     this.pushLeft();
     this.switchXY();
   }
-  /**下移 */
   pushDown() {
     this.switchXY();
     this.pushRight();
@@ -145,7 +147,7 @@ export default class Core {
 
   /** 
    * 空位随机生成数字
-   * */
+   */
   setEmptyNum() {
     this.newNumPosition = []; // 新生成的数字坐标，用于加动画
     let temparr = [];//矩阵空位的坐标
@@ -174,21 +176,22 @@ export default class Core {
           isOver = false; //游戏还能继续，取消结束状态
           break G1;
         }
-        this.GAME_SCORE += this.GAME[i][j];//矩阵所有数据求和
+        this.GAME_SCORE += this.GAME[i][j]; // summary
       }
     }
     return isOver;
   }
-  /**绘制矩阵*/
+  /**output array to html*/
   showGame() {
     let numCude = document.querySelectorAll("#gameDiv>.numCube");
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
         let cube = numCude[this.MATRIC_SIZE * i + j]
         cube.textContent = this.GAME[i][j] || '';
+        // TODO: 数字越大，颜色越鲜艳
         if(this.newNumPosition.includes(i+ '-' + j)){
           cube.classList.remove('scale');
-          void cube.offsetWidth; // 触发重绘
+          void cube.offsetWidth; // trigger reflow
           cube.classList.add('scale');
         }
       }
