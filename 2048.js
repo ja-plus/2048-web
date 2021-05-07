@@ -1,16 +1,31 @@
 import GameCore from './gameCore.js'
+let game;
 window.onload=function(){
     // alert("mission start!");
-    let game =  new GameCore(); 
+    game = new GameCore(); 
     keyAction(game);//初始化键盘响应事件
     touchAction(game);
+    mouseAction(game);
+    
 };
+function mouseAction(game){
+    let buttons = document.querySelectorAll('.grid-container button');
+    for (const button of buttons) {
+        button.addEventListener('click',() => {
+            game.control(button.id.split('-')[0]);
+        })
+    }
+}
+function restart(){
+
+}
 /**键盘响应事件 */
 function keyAction(game){
     document.onkeydown = function(event){
         var e = event || window.event || arguments.callee.caller.arguments[0];
         if(e.keyCode == 37){
             game.control('left');
+            // document.querySelector('.left-btn').click();
         }
         if(e.keyCode == 38){
             game.control('up');
@@ -52,3 +67,4 @@ function touchAction(game){
 
     })
 }
+

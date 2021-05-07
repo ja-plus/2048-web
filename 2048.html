@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,30 +8,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- <button onclick="pushUp();">上</button>
-    <button onclick="pushDown();">下</button>
-    <button onclick="pushLeft();">左</button>
-    <button onclick="pushRight();">右</button> -->
-    <div id="gameDiv" class="gameContainer">
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
 
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
+    <div class="grid-container">
+        <button id="up-btn" class="up-btn">上</button>
+        <button id='left-btn' class="left-btn">左</button>
+        <div id="gameDiv" class="gameContainer">
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+    
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+    
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+    
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+            <div class="numCube" name="numCube" ></div>
+        </div>
+        <button id='right-btn' class="right-btn">右</button>
+        <button id="down-btn" class="down-btn">下</button>
 
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
-        <div class="numCube" name="numCube" ></div>
     </div>
     
     <!-- <div>
@@ -41,6 +45,5 @@
     </div> -->
 
 </body>
-<!-- <script src="./jquery-3.2.1.min.js"></script> -->
 <script src="./2048.js" type="module"></script>
 </html>

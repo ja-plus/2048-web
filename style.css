@@ -5,6 +5,30 @@ body{
   justify-content: center;
   align-items: center;
 }
+.grid-container{
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-rows: 30px auto 30px;
+  gap: 4px;
+  justify-items: center;
+}
+
+.grid-container >button {
+  border: none;
+  outline: none;
+  border-radius: 3px;
+}
+.grid-container >button:active{
+  background: gray;
+}
+.grid-container .up-btn{
+  grid-column: span 3;
+  width: 226px;
+}
+.grid-container .down-btn{
+  grid-column: span 3;
+  width: 226px;
+}
 .gameContainer{
   display: grid;
   grid-template-rows: repeat(4, max-content);

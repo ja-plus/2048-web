@@ -187,9 +187,10 @@ export default class Core {
     let numCude = document.querySelectorAll("#gameDiv>.numCube");
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
+        let num = this.GAME[i][j];
         let cube = numCude[this.MATRIC_SIZE * i + j]
-        cube.textContent = this.GAME[i][j] || '';
-        // TODO: 数字越大，颜色越鲜艳
+        cube.textContent = num || '';
+        cube.style.color = NUM_COLOR_MAP[num]; // different number different color
         if(this.newNumPosition.includes(i+ '-' + j)){
           cube.classList.remove('scale');
           void cube.offsetWidth; // trigger reflow
@@ -198,4 +199,18 @@ export default class Core {
       }
     }
   }
+}
+
+const NUM_COLOR_MAP = {
+  2: 'gray',
+  4: 'green',
+  8: 'blue',
+  16: 'cyan',
+  32: 'orange',
+  64: 'brown',
+  128: 'violte',
+  256: 'darkgreen',
+  512: 'teal',
+  1024: 'tomato',
+  2048: 'red'
 }
