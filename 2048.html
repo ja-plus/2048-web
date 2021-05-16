@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>game</title>
+    <title>2048-web</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,26 +12,9 @@
     <div class="grid-container">
         <button id="up-btn" class="up-btn">上</button>
         <button id='left-btn' class="left-btn">左</button>
-        <div id="gameDiv" class="gameContainer">
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-    
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-    
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-    
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
-            <div class="numCube" name="numCube" ></div>
+        <div id="gameDiv" class="game-container">
+            <div class="game-background"></div>
+            <!-- <div class="numCube" name="numCube" ></div> -->
         </div>
         <button id='right-btn' class="right-btn">右</button>
         <button id="down-btn" class="down-btn">下</button>

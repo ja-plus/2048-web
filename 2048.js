@@ -2,12 +2,13 @@ import GameCore from './gameCore.js'
 let game;
 window.onload=function(){
     // alert("mission start!");
-    game = new GameCore(); 
+    game = new GameCore({selector:'#gameDiv'});
     keyAction(game);//初始化键盘响应事件
     touchAction(game);
     mouseAction(game);
     
 };
+
 function mouseAction(game){
     let buttons = document.querySelectorAll('.grid-container button');
     for (const button of buttons) {

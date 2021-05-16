@@ -3,13 +3,19 @@
  * @author:JA+ 
  */
 export default class Core {
-  constructor(gameArr) {
+  constructor({selector }) {
+    this.selector = selector
     this.GAME_SCORE = 0;
-    this.GAME = gameArr; //全局游戏矩阵
+    /**@type{Array<Array<{value:number}>>} */
+    this.GAME; //全局游戏矩阵
+    this.GAME_BEFORE; // 动画执行前的矩阵
+    // this.GAME_HIS = []; // 矩阵状态历史
     this.MATRIC_SIZE = 4; //默认矩阵大小为4
     this.rdNum = [2, 4]; //随机生成的数字集合，新数字会随机从中选择一个，并随机生成在矩阵空位
     this.newNumPosition = []; //新生成数字的坐标['x1-y1','x2-y2']
-    if (!gameArr) this.initArr(); // 不传入矩阵则生成矩阵
+
+    this.createCubeElement(); // 创建方块元素
+    this.initArr(); // 不传入矩阵则生成矩阵
 
     // 给Array原型加上判断数组是否相同的方法
     Array.prototype.equalTo = function equal(arr) {
@@ -19,11 +25,9 @@ export default class Core {
         if (Array.isArray(row)) {
           if (row.length != arr[i].length) return false;
           for (let j = 0; j < row.length; j++) {
-            const val = row[j];
-            if (val !== arr[i][j]) return false;
+            const val = row[j].value;
+            if (val !== arr[i][j].value) return false;
           }
-        } else {
-          if (row !== arr[i]) return false;
         }
       }
       return true;
@@ -34,10 +38,36 @@ export default class Core {
   initArr() {
     this.GAME = new Array(this.MATRIC_SIZE);
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
-      this.GAME[i] = new Array(this.MATRIC_SIZE).fill(0);
+      this.GAME[i] = new Array(this.MATRIC_SIZE);
+      for (let j = 0; j < this.MATRIC_SIZE; j++) {
+        let number = {
+          value: 0,
+          // from: [],
+          to: [null,null], // move destination coordinate
+        }
+        this.GAME[i][j] = number;
+      } 
+        
     }
     this.setEmptyNum(); // create random number
     this.showGame();
+  }
+  /**create cube element */
+  createCubeElement() {
+    let gameDiv = document.querySelector(this.selector);
+    if (!gameDiv) throw new Error('can not find the element:' + this.selector);
+    let gameBg = document.createElement('div');
+    gameBg.classList.add('game-background');
+    gameDiv.append(gameBg); // add game background cube
+
+    for (let i = 0; i < this.MATRIC_SIZE ** 2; i++) {
+      let bgCube = document.createElement('div');
+      gameBg.append(bgCube);
+      let cube = document.createElement('div');
+      cube.classList.add('num-cube');
+      gameDiv.append(cube);
+    }
+
   }
 
   /**
@@ -71,7 +101,7 @@ export default class Core {
         }, 500);
       }
     }
-  }
+  } 
   pushLeft() {
     let tempArr = JSON.parse(JSON.stringify(this.GAME)); // 保存矩阵用于先后比较是否相等
     for (const row of this.GAME) {
@@ -105,31 +135,35 @@ export default class Core {
    */
   arrLeft(arr) {
     for (let i = 0; i < arr.length; i++) {
-      const val = arr[i];
+      const val = arr[i].value;
       if (i == arr.length - 1 && val == 0) break;
       let j = i;
       let tmpNum = 0;
       if (val == 0) { // 是0的话就让下一个非零值占用这个位置
         for (++j; j < this.MATRIC_SIZE; j++) { // 找到第一个有值的
-          if (arr[j] > 0) break;
+          if (arr[j].value > 0) break;
           else if (j == this.MATRIC_SIZE - 1) return; // 全是0的情况
         }
-        tmpNum = arr[j]; // 保存值
-        arr[j] = 0;
+        tmpNum = arr[j].value; // 保存值
+        arr[j].value = 0;
+        arr[j].to[0] = i; // 移动到哪里
+        // arr[i].from.push(j); // 记录哪里移动过来的
       } else {
-        tmpNum = arr[i]; // 保存值
+        tmpNum = arr[i].value; // 保存值
       }
 
       for (++j; j < this.MATRIC_SIZE; j++) { // 这个数字后面找到第一个不为0的数字
-        if (arr[j] != 0) {
-          if (tmpNum == arr[j]) { // 相同的数字就合并
+        if (arr[j].value != 0) {
+          if (tmpNum == arr[j].value) { // 相同的数字就合并
             tmpNum *= 2;
-            arr[j] = 0;
+            arr[j].value = 0;
+            arr[j].to[0] = i;
+            // arr[i].from.push(j); // 记录从哪儿移动过来
           }
           break;
         }
       }
-      arr[i] = tmpNum;
+      arr[i].value = tmpNum;
     }
   }
   /**
@@ -138,9 +172,9 @@ export default class Core {
   switchXY() {
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = i + 1; j < this.MATRIC_SIZE; j++) {// 遍历行每行的i和每列的i交换
-        this.GAME[i][j] ^= this.GAME[j][i];
-        this.GAME[j][i] ^= this.GAME[i][j];
-        this.GAME[i][j] ^= this.GAME[j][i];
+        let temp = this.GAME[j][i];
+        this.GAME[j][i] = this.GAME[i][j];
+        this.GAME[i][j] = temp;
       }
     }
   }
@@ -153,7 +187,7 @@ export default class Core {
     let temparr = [];//矩阵空位的坐标
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
-        if (!this.GAME[i][j]) {
+        if (!this.GAME[i][j].value) {
           temparr.push([i, j]);//为0的坐标传入temparr
         }
       }
@@ -162,7 +196,7 @@ export default class Core {
       let rX = Math.floor(Math.random() * temparr.length);
       let [x, y] = temparr[rX]; // 随机的空位坐标
       this.newNumPosition.push(x + '-' + y);
-      this.GAME[x][y] = this.rdNum[Math.floor(Math.random() * this.rdNum.length)];//自动生成数字填入
+      this.GAME[x][y].value = this.rdNum[Math.floor(Math.random() * this.rdNum.length)];//自动生成数字填入
     }
   }
 
@@ -173,36 +207,48 @@ export default class Core {
     //判断所有相邻位置没有相同的数  
     G1: for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
-        if (this.GAME[i][j] == this.GAME[i]?.[j + 1] || this.GAME[j][i] == this.GAME[j + 1]?.[i] || this.GAME[i][j] == 0) {
+        if (this.GAME[i][j].value == this.GAME[i][j + 1]?.value ||
+           this.GAME[j][i].value == this.GAME[j + 1]?.[i].value ||
+           this.GAME[i][j].value == 0) {
           isOver = false; //游戏还能继续，取消结束状态
           break G1;
         }
-        this.GAME_SCORE += this.GAME[i][j]; // summary
+        this.GAME_SCORE += this.GAME[i][j].value; // summary
       }
     }
     return isOver;
   }
   /**output array to html*/
   showGame() {
-    let numCude = document.querySelectorAll("#gameDiv>.numCube");
+    console.log(this.GAME);
+    let numCude = document.querySelectorAll(".num-cube");
     for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
-        let num = this.GAME[i][j];
+        let num = this.GAME[i][j].value;
         let cube = numCude[this.MATRIC_SIZE * i + j]
         cube.textContent = num || '';
-        cube.style.color = NUM_COLOR_MAP[num]; // different number different color
-        if(this.newNumPosition.includes(i+ '-' + j)){
+        cube.style.backgroundColor = NUM_COLOR_MAP[num] || null; // different number different color
+        if (this.newNumPosition.includes(i + '-' + j)) {
           cube.classList.remove('scale');
           void cube.offsetWidth; // trigger reflow
           cube.classList.add('scale');
         }
+        // this.setMoveAnimation(this.GAME[i][j],cube)
+        // this.GAME[i][j].from = [];// clear where from
       }
     }
   }
+
+  // setMoveAnimation(numObj, cubeEle){
+  //   if(numObj.from?.length){
+
+  //   }
+  // }
 }
 
+
 const NUM_COLOR_MAP = {
-  2: 'gray',
+  2: '#aaa',
   4: 'green',
   8: 'blue',
   16: 'cyan',
