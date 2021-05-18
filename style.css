@@ -51,11 +51,12 @@ body{
   border-radius: 5px;
 }
 .game-container .num-cube{
+  --moveX: 0px;
+  --moveY: 0px;
+  --duration: 0s;
   width: var(--cubeSize);
   height: var(--cubeSize);
-  /* background-color: bisque; */
   border-radius: 5px;
-  /* border:2px solid burlywood; */
   text-align: center;
   line-height: var(--cubeSize);
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -63,7 +64,11 @@ body{
   text-shadow: 0 0 2px rgba(0,0,0,.5);
   font-size: 20px; /*字体大小*/
   font-weight: 700; /*加粗*/
-  transition: all ease .3s;
+  transition-property: all;
+  transition-duration: var(--duration);
+  transition-timing-function: ease;
+
+  transform: translate(var(--moveX),var(--moveY));
 }
 
 .game-container .num-cube.scale {
@@ -72,14 +77,5 @@ body{
 @keyframes newScale {
   from{
     transform: scale(.5);
-  }
-}
-.game-container .num-cube.move{
-  /* --moveX: 50px; */
-  animation: moveCube .3s ease;
-}
-@keyframes moveCube {
-  from{
-    transform: translate(var(--moveX),0);
   }
 }
