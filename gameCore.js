@@ -16,10 +16,11 @@ export default class Core {
     this.tranDuration = 0.2; // move anm time
     this.createCubeElement(); // 创建方块元素
     this.initArr(); // 不传入矩阵则生成矩阵
+    this.showGameTimeout = null;
 
     // 给Array原型加上判断数组是否相同的方法
     Array.prototype.equalTo = function equal(arr) {
-      if (this.length != arr.length) return false; // 长度不相同不相等
+      if (this.length != arr.length) return false; // array length not equal
       for (let i = 0; i < this.length; i++) {
         const row = this[i];
         if (Array.isArray(row)) {
@@ -75,6 +76,7 @@ export default class Core {
    * @param {String} direction ['up'|'down'|'left'|'right']
    */
   control(direction) {
+    if(this.showGameTimeout) return; // last animation didnt end,cant move
     let beforeArr = JSON.parse(JSON.stringify(this.GAME));
     switch (direction) {
       case 'up':
@@ -90,13 +92,15 @@ export default class Core {
         this.pushRight();
         break;
     }
-    // 移动前后判断矩阵是否相同，用于判断是否在空位生成新数字
+    // is array is equal to before array(is game moved)
     if (!this.GAME.equalTo(beforeArr)) {
       this.setEmptyNum();
       this.setMoveAnimation(direction);
-      setTimeout(() => {
+      this.showGameTimeout = setTimeout(() => {
         this.showGame();
+        this.showGameTimeout = null;
       }, this.tranDuration * 1000);
+
       if (this.isGameOver()) {
         setTimeout(() => {
           alert("2048 End!Your Score:" + this.GAME_SCORE);
@@ -142,20 +146,20 @@ export default class Core {
       let j = i;
       let tmpNum = 0;
       if (val == 0) { // 是0的话就让下一个非零值占用这个位置
-        for (++j; j < this.MATRIC_SIZE; j++) { // 找到第一个有值的
+        for (++j; j < this.MATRIC_SIZE; j++) { // find the next number not 0
           if (arr[j].value > 0) break;
-          else if (j == this.MATRIC_SIZE - 1) return; // 全是0的情况
+          else if (j == this.MATRIC_SIZE - 1) return; // all 0
         }
-        tmpNum = arr[j].value; // 保存值
+        tmpNum = arr[j].value; // store value
         arr[j].value = 0;
-        arr[j].to = i; // 移动到哪里
+        arr[j].to = i; // where to move
       } else {
-        tmpNum = arr[i].value; // 保存值
+        tmpNum = arr[i].value; // store value
       }
 
-      for (++j; j < this.MATRIC_SIZE; j++) { // 这个数字后面找到第一个不为0的数字
-        if (arr[j].value != 0) {
-          if (tmpNum == arr[j].value) { // 相同的数字就合并
+      for (++j; j < this.MATRIC_SIZE; j++) { // find next number not 0
+        if (arr[j].value != 0) { // not 0
+          if (tmpNum == arr[j].value) { // same number merge
             tmpNum *= 2;
             arr[j].value = 0;
             arr[j].to = i;

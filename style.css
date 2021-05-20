@@ -72,7 +72,7 @@ body{
 }
 
 .game-container .num-cube.scale {
-  animation: newScale .3s ease;
+  animation: newScale .2s ease;
 }
 @keyframes newScale {
   from{
