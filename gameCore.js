@@ -13,7 +13,7 @@ export default class Core {
     this.newNumPosition = []; //新生成数字的坐标['x1-y1','x2-y2']
     this.moveUnit = 0; // 移动距离单位，方块大小+边距
     this.cubeElements = []; // 创建的每个方块元素
-    this.tranDuration = 0.3; // move anm time
+    this.tranDuration = 0.2; // move anm time
     this.createCubeElement(); // 创建方块元素
     this.initArr(); // 不传入矩阵则生成矩阵
 
@@ -42,6 +42,7 @@ export default class Core {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
         let number = {
           value: 0, // value after move
+          added: false, // has added into this cube
           to: null, // move destination coordinate
         }
         this.GAME[i][j] = number;
@@ -158,6 +159,7 @@ export default class Core {
             tmpNum *= 2;
             arr[j].value = 0;
             arr[j].to = i;
+            arr[i].added = true;
           }
           break;
         }
@@ -225,7 +227,6 @@ export default class Core {
         let cubeEle = this.cubeElements[this.MATRIC_SIZE * i + j]
         let numObj = this.GAME[i][j];
         let num = numObj.value;
-        numObj.to = null;
         cubeEle.style.setProperty('--moveX','0px');
         cubeEle.style.setProperty('--moveY','0px');
         cubeEle.style.setProperty('--duration', '0s'); // add translate time
@@ -233,10 +234,20 @@ export default class Core {
 
         cubeEle.textContent = num || '';
         cubeEle.style.backgroundColor = NUM_COLOR_MAP[num] || null; // different number different color
+        if(numObj.added){
+          cubeEle.classList.remove('added');
+          void cubeEle.offsetWidth; // trigger reflow
+          cubeEle.classList.add('added');
+        }
         if (this.newNumPosition.includes(i + '-' + j)) {
           cubeEle.classList.remove('scale');
           void cubeEle.offsetWidth; // trigger reflow
           cubeEle.classList.add('scale');
+        }
+        // reset numObj
+        {
+          numObj.to = null;
+          numObj.added = false;
         }
       }
     }

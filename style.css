@@ -66,7 +66,7 @@ body{
   font-weight: 700; /*加粗*/
   transition-property: all;
   transition-duration: var(--duration);
-  transition-timing-function: ease;
+  transition-timing-function: ease-out;
 
   transform: translate(var(--moveX),var(--moveY));
 }
@@ -77,5 +77,13 @@ body{
 @keyframes newScale {
   from{
     transform: scale(.5);
+  }
+}
+.game-container .num-cube.added{
+  animation: addedAnm .2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+@keyframes addedAnm {
+  from{
+    transform: scale(1.2);
   }
 }
