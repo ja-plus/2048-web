@@ -1,0 +1,27 @@
+{
+  "name": "2048-web",
+  "version": "1.0.0",
+  "description": "2048 web game",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/601286825nj/2048.git"
+  },
+  "author": "JA+",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/601286825nj/2048/issues"
+  },
+  "homepage": "https://github.com/601286825nj/2048#readme",
+  "devDependencies": {
+    "electron": "^12.0.9"
+  },
+  "dependencies": {}
+}

@@ -54,6 +54,7 @@ body{
   --moveX: 0px;
   --moveY: 0px;
   --duration: 0s;
+  user-select: none;
   width: var(--cubeSize);
   height: var(--cubeSize);
   border-radius: 5px;
