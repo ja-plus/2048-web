@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "description": "2048 web game",
   "main": "main.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "dev": "electron .",
+    "build": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "appId": "com.ja.app",
+    "directories": {
+      "output": "builder"
+    },
+    "win": {
+      "target": ["nsis","zip"]
+    }
   },
   "repository": {
     "type": "git",
@@ -21,7 +28,8 @@
   },
   "homepage": "https://github.com/601286825nj/2048#readme",
   "devDependencies": {
-    "electron": "^12.0.9"
+    "electron": "^12.0.9",
+    "electron-builder": "^22.10.5"
   },
   "dependencies": {}
 }
