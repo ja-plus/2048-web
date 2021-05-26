@@ -1,5 +1,6 @@
 :root{
   --cubeSize: 50px;
+  --anmDuration: 0.2s;
 }
 body{
   margin: 0;
@@ -73,7 +74,7 @@ body{
 }
 
 .game-container .num-cube.scale {
-  animation: newScale .2s ease;
+  animation: newScale var(--anmDuration) ease;
 }
 @keyframes newScale {
   from{
@@ -81,7 +82,7 @@ body{
   }
 }
 .game-container .num-cube.added{
-  animation: addedAnm .2s cubic-bezier(0.19, 1, 0.22, 1);
+  animation: addedAnm var(--anmDuration) cubic-bezier(0.19, 1, 0.22, 1);
 }
 @keyframes addedAnm {
   from{

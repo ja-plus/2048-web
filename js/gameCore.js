@@ -95,9 +95,9 @@ export default class Core {
     // is array is equal to before array(is game moved)
     if (!this.GAME.equalTo(beforeArr)) {
       this.setEmptyNum();
-      this.setMoveAnimation(direction);
+      this.setMoveAnimation(direction); // playing moving animation
       this.showGameTimeout = setTimeout(() => {
-        this.showGame();
+        this.showGame(); // after moving finished, show the final result
         this.showGameTimeout = null;
       }, this.tranDuration * 1000);
 
@@ -238,13 +238,12 @@ export default class Core {
 
         cubeEle.textContent = num || '';
         cubeEle.style.backgroundColor = NUM_COLOR_MAP[num] || null; // different number different color
+        cubeEle.classList.remove('added', 'scale');
         if(numObj.added){
-          cubeEle.classList.remove('added');
           void cubeEle.offsetWidth; // trigger reflow
           cubeEle.classList.add('added');
         }
         if (this.newNumPosition.includes(i + '-' + j)) {
-          cubeEle.classList.remove('scale');
           void cubeEle.offsetWidth; // trigger reflow
           cubeEle.classList.add('scale');
         }
