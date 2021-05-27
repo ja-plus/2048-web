@@ -1,13 +1,20 @@
 import GameCore from './gameCore.js'
 let game;
 window.onload=function(){
-    // alert("mission start!");
+    init();
+};
+function init(){
     game = new GameCore({selector:'#gameDiv'});
-    keyAction(game);//初始化键盘响应事件
+    keyAction(game); //初始化键盘响应事件
     touchAction(game);
     mouseAction(game);
-    
-};
+    btnAction(game);
+
+    let scoreNum = document.querySelector('.score-num');
+    game.addCallback(function(score){
+        scoreNum.textContent = score;
+    })
+}
 
 function mouseAction(game){
     let buttons = document.querySelectorAll('.grid-container button');
@@ -16,9 +23,6 @@ function mouseAction(game){
             game.control(button.id.split('-')[0]);
         })
     }
-}
-function restart(){
-
 }
 /**键盘响应事件 */
 function keyAction(game){
@@ -69,3 +73,8 @@ function touchAction(game){
     })
 }
 
+function btnAction(game){
+    document.querySelector('.reset').addEventListener('click',(e) => {
+        game.reset();
+    })
+}

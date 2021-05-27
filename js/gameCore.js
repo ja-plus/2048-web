@@ -17,6 +17,7 @@ export default class Core {
     this.createCubeElement(); // 创建方块元素
     this.initArr(); // 不传入矩阵则生成矩阵
     this.showGameTimeout = null;
+    this.stepCallback = []; // funciton
 
     // 给Array原型加上判断数组是否相同的方法
     Array.prototype.equalTo = function equal(arr) {
@@ -106,6 +107,7 @@ export default class Core {
           alert("2048 End!Your Score:" + this.GAME_SCORE);
         }, 500);
       }
+      this.doCallback();
     }
   }
   pushLeft() {
@@ -203,13 +205,14 @@ export default class Core {
       this.newNumPosition.push(x + '-' + y);
       let newNum = this.rdNum[Math.floor(Math.random() * this.rdNum.length)];//自动生成数字填入
       this.GAME[x][y].value = newNum;
+      this.GAME_SCORE += newNum;
     }
   }
 
   /** 判断游戏是否结束 */
   isGameOver() {
     let isOver = true; //游戏结束判断标识符，默认结束
-    this.GAME_SCORE = 0;
+    // this.GAME_SCORE = 0;
     //判断所有相邻位置没有相同的数  
     G1: for (let i = 0; i < this.MATRIC_SIZE; i++) {
       for (let j = 0; j < this.MATRIC_SIZE; j++) {
@@ -219,7 +222,7 @@ export default class Core {
           isOver = false; //游戏还能继续，取消结束状态
           break G1;
         }
-        this.GAME_SCORE += this.GAME[i][j].value; // summary
+        // this.GAME_SCORE += this.GAME[i][j].value; // summary
       }
     }
     return isOver;
@@ -280,6 +283,26 @@ export default class Core {
         }
       }
     }
+  }
+
+  /**restart game */
+  reset(){
+    this.initArr();
+    // TODO: maybe add reset animation
+  }
+  addCallback(func){
+    if(typeof func === 'function'){
+      this.stepCallback.push(func);
+    }
+  }
+  removeCallback(func){
+    this.stepCallback = this.stepCallback.filter(it => it === func);
+  }
+  // run callback function
+  doCallback(){
+    this.stepCallback.forEach(cb => {
+      cb(this.GAME_SCORE);
+    })
   }
 }
 
