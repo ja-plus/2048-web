@@ -9,6 +9,7 @@ app.whenReady().then(() => {
     minWidth: 400,
     minHeight: 400,
     center: true,
+    icon: './icon/icon.png',
     // frame: false,
     // resizable: false,
     webPreferences: {

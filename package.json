@@ -14,14 +14,26 @@
       "output": "builder"
     },
     "win": {
-      "target": ["nsis","zip"]
+      "icon": "./icon/icon.ico",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "linux": {
+      "icon": "icon",
+      "target": "deb",
+      "category": "Game"
     }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/601286825nj/2048.git"
   },
-  "author": "JA+",
+  "author": {
+    "name": "JA+",
+    "email": "601286825@qq.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/601286825nj/2048/issues"

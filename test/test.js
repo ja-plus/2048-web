@@ -1,4 +1,4 @@
-import Game from '../gameCore.js';
+import Game from '../js/gameCore.js';
 
 let arr = [
   [0, 2, 4, 2],
